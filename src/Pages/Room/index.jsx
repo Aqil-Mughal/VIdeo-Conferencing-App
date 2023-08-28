@@ -57,7 +57,6 @@ const RoomPage = () => {
                 </nav>
             </div>
             <div ref={joinRoom} style={{ border: "1px solid white", margin: "auto", }}>
-                <button onClick={() => joinRoom()}>Enter the chat</button>
 
             </div>
 
