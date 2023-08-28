@@ -11,7 +11,7 @@ const Homepage = () => {
 
     const generateRandomRoomCode = () => {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        const length = 6; 
+        const length = 6;
         let roomCode = '';
         for (let i = 0; i < length; i++) {
             const randomIndex = Math.floor(Math.random() * characters.length);
@@ -42,8 +42,8 @@ const Homepage = () => {
                         <div className="card">
                             <div className="card-body" style={{ margin: "30px" }}>
                                 <h2 className="card-title mb-4">Join Room</h2>
-                                <form style={{ display:'flex' }}>
-                                    <img src={Rectangle} className='Background_style' />
+                                <form style={{ display: 'flex' }}>
+
                                     <div className="mb-6">
                                         <label htmlFor="email" className="form-label">Email</label>
                                         <input
@@ -66,7 +66,6 @@ const Homepage = () => {
                                             placeholder="Enter your password"
                                         />
                                     </div>
-                                    {error && <p className="text-danger">{error}</p>}
 
                                     <button
                                         type="button"
@@ -75,6 +74,7 @@ const Homepage = () => {
                                     >
                                         Join
                                     </button>
+                                    {error && <p className="text-danger">{error}</p>}
 
                                 </form>
 
@@ -88,3 +88,5 @@ const Homepage = () => {
 }
 
 export default Homepage;
+
+// <img src={Rectangle} className='Background_style' />
