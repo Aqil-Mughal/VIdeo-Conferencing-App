@@ -188,7 +188,7 @@ const Invites = () => {
 
             ))}
             <button onClick={addEmailField} style={{ marginTop: '20px',marginBottom:"30px",height:"35px",width:"3%",backgroundColor:"white",border:"1px solid black" }}>+</button>
-            <button style={{marginLeft:"130px",height:"40px",backgroundColor:"white",width:"15%",}} onClick={sendInvitations} disabled={!canSendInvitations || invitationSent}>
+            <button style={{marginLeft:"12.5%",height:"40px",backgroundColor:"white",width:"15%",}} onClick={sendInvitations} disabled={!canSendInvitations || invitationSent}>
               {invitationSent ? 'Invitations Sent' : 'Send Invitations'}
             </button>
             {invitationSent && (

@@ -20,7 +20,7 @@ body{
     padding-left: 10px;
     border-radius: 4px;
     font-size: 15px;
-    border: 1px solid black;
+    border: 1px solid rgb(118, 118, 118);
    
   }
   .react-time-picker__button svg {
