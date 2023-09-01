@@ -1,0 +1,12 @@
+.Main_card {
+    background-color: #f6f6f6;
+    background-image: url(aamanto.png);
+    display: flex;
+    justify-content: center;
+    border-radius: 20px;
+    margin: auto;
+    margin-top: 5%;
+    width: 80%;
+    height: 45vh;
+    border: 1px solid black;
+}

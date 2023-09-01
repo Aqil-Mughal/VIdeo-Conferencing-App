@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Rectangle from './Rectangle 4.png'
+import Logo from './support-managemwnt.png'
+import '../Home/Homepage.css'
 
 const Homepage = () => {
     const [email, setEmail] = useState('');
@@ -23,6 +24,9 @@ const Homepage = () => {
         const roomCode = generateRandomRoomCode();
         navigate(`/room/${roomCode}`);
     }, [navigate]);
+    const handleJoinLater = useCallback(() => {
+        navigate(`/send-invite`);
+    }, [navigate]);
     // const handleJoinRoom = useCallback(() => {
     //     if (email && password) {
     //         if (email === 'user@email.com' && password === '123') {
@@ -39,19 +43,49 @@ const Homepage = () => {
 
     return (
         <>
-
             <div className="container">
                 <div className="row justify-content-center mt-5">
+                    <div style={{ width: "90%", margin: "auto" }}>
+                        <nav>
+                            <img src={Logo} style={{}} />
+                        </nav>
+                    </div>
                     <div className="col-md-12">
-                        <div className="card">
-                            <div className="card-body">
-                                <h2 className="card-title mb-4">Join Room</h2>
+                        <h1 className="main-title" style={{ color: "black", textAlign: "center", marginBottom: "20px" }}>Welcome to Our Meeting Platform</h1>
+                        <div className="Main_card">
+                            <div className="card-body" style={{ width: "40%", margin: "20px" }}>
+
+                                <h2 className="card-title mb-4" style={{ color: "white" }}>Start an Instant Meeting</h2>
+                                <p style={{ color: "white", marginTop: "8%" }}>
+                                    Welcome to our instant meeting platform! Connect and collaborate effortlessly with our cutting-edge meeting solution.
+                                    With just a click you can join a meeting room and collaborate with your team or friends in real-time.
+                                </p>
+                                
+
                                 <button
                                     type="button"
                                     className="btn btn-primary"
                                     onClick={handleJoinRoom}
+                                    style={{ width: "30%", backgroundColor: "white", marginTop: "10%", border: "none", borderRadius: "5px", color: "#1967D3", height: "50px", cursor: "pointer" }}
                                 >
-                                    Join
+                                    Join Now
+                                </button>
+                            </div>
+                            <div className="card-body" style={{ width: "40%", margin: "20px" }}>
+                                <h2 className="card-title mb-4" style={{ color: "white" }}>Create a meeting for later</h2>
+                                <p style={{ color: "white", marginTop: "8%" }}>
+                                    Planning an upcoming meeting? You can schedule a meeting for later and invite participants at your convenience.
+                                    Whether you're planning for a team discussion, project update, or casual catch-up, regardless of your team's varying schedules.
+                                </p>
+                            
+
+                                <button
+                                    type="button"
+                                    className="btn btn-primary"
+                                    onClick={handleJoinLater}
+                                    style={{ width: "30%", backgroundColor: "white", marginTop: "10%", marginBottom: "8%", border: "none", borderRadius: "5px", color: "#1967D3", height: "50px", cursor: "pointer" }}
+                                >
+                                    Create for later
                                 </button>
                             </div>
                         </div>
