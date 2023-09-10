@@ -1,11 +1,6 @@
-
-  @import url('https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,200&display=swap');
-body{
-  font-family: 'Literata', serif;
-}
 .main_card{
     border: 1px solid #cabcbc;
-    width: 80%;
+    width: 90%;
     margin: auto;
     margin-top: 2%;
     display: flex;
@@ -15,12 +10,15 @@ body{
     /* background-image: linear-gradient(to bottom, rgba(245, 246, 252, 0.52), rgba(121, 80, 111, 0.73)), url(Rectangle\ 4.png); */
 }
 .custom-date-picker {
-    width: 100%;
+    width: 20vw;
     height: 40px;
     padding-left: 10px;
     border-radius: 4px;
     font-size: 15px;
-    border: 1px solid rgb(118, 118, 118);
+    border: none;
+    margin-top: 5px;
+    background-color: #EDF2F6;
+    /* border: 1px solid red; */
    
   }
   .react-time-picker__button svg {
@@ -31,9 +29,13 @@ body{
     border: 2px solid red;
 }
 .react-time-picker__wrapper{
-    width: 130px;
+    width: 22vw;
+    height: 40px;
     padding-left: 10px;
+    border: none;
+    background-color: #EDF2F6;
     border-radius: 5px;
+
 }
   .date-picker-container {
     display: flex;
@@ -41,11 +43,10 @@ body{
     margin-bottom: 20px;
   }
   .custom-time-picker {
-    width: 8%;
+    width: 80%;
     height: 50px;
     /* border: 2px solid red; */
     padding: 5px;
-    
     border-radius: 4px;
     font-size: 14px;
   }

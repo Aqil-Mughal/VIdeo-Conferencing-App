@@ -1,14 +1,22 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import TimePicker from 'react-time-picker';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'react-time-picker/dist/TimePicker.css';
 import '../Invite/Invites.css'
-import Logo from './support-managemwnt.png'
+import Logo from './aamantologo.png'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCopy } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
+
 
 
 const Invites = () => {
   const [emails, setEmails] = useState(['']);
+  const [chips, setChips] = useState([]);
+  const [newEmail, setNewEmail] = useState('');
+  const [errors, setErrors] = useState(null);
+
   const [emailErrors, setEmailErrors] = useState(['']);
   const [invitationSent, setInvitationSent] = useState(false);
   const [roomId, setRoomId] = useState('');
@@ -17,6 +25,16 @@ const Invites = () => {
   const [meetingDate, setMeetingDate] = useState(null);
   const [startingTime, setStartingTime] = useState('00:00');
   const [endingTime, setEndingTime] = useState('00:00');
+  // const [copied, setCopied] = useState(false);
+
+  // const copyToClipboard = useCallback(() => {
+  //   const linkInput = document.getElementById('roomLink');
+  //   if (linkInput) {
+  //     linkInput.select();
+  //     document.execCommand('copy');
+  //     setCopied(true);
+  //   }
+  // }, []);
 
   // const styles = {
   //   display: 'block',
@@ -41,14 +59,34 @@ const Invites = () => {
     }
     return roomCode;
   };
-  const handleEmailChange = (index, value) => {
-    const updatedEmails = [...emails];
-    updatedEmails[index] = value;
-    setEmails(updatedEmails);
+  const handleEmailChange = (event) => {
+    const value = event.target.value;
+    if (event.key === 'Enter' && value.trim() !== '') {
+      setChips([...chips, value.trim()]);
+      setNewEmail('');
+      setErrors('');
+    } else {
+      setNewEmail(value);
 
-    const updatedErrors = [...emailErrors];
-    updatedErrors[index] = validateEmail(value) || value.trim() === '' ? '' : '';
-    setEmailErrors(updatedErrors);
+      if (!validateEmail(value)) {
+        setErrors('Please write a correct email');
+      } else {
+        setErrors('');
+      }
+    }
+  };
+  const handleAddEmail = () => {
+    if (newEmail.trim() !== '' && validateEmail(newEmail.trim())) {
+      setChips([...chips, newEmail.trim()]);
+      setNewEmail('');
+    } else {
+      setErrors('Please write a correct email');
+    }
+  };
+  const removeChip = (index) => {
+    const updatedChips = [...chips];
+    updatedChips.splice(index, 1);
+    setChips(updatedChips);
   };
 
   const addEmailField = () => {
@@ -62,9 +100,21 @@ const Invites = () => {
     setEmails(updatedEmails);
     setEmailErrors(updatedErrors);
   };
+  const copyMeetingLink = () => {
+    const meetingLink = `http://localhost:3000/room/${roomId}`;
+
+    navigator.clipboard.writeText(meetingLink)
+      .then(() => {
+        alert("Link copied to clipboard!");
+      })
+      .catch(error => {
+        console.error("Error copying link: ", error);
+        alert("Error copying link. Please copy it manually.");
+      });
+  };
 
   const sendInvitations = async () => {
-    const allValid = emails.every(email => validateEmail(email) && email.trim() !== '');
+    const allValid = chips.every(email => validateEmail(email) && email.trim() !== '');
 
     if (allValid) {
       const newRoomId = generateRandomRoomCode();
@@ -110,19 +160,21 @@ const Invites = () => {
     // }
   };
 
-  const canSendInvitations = emails.every(email => validateEmail(email) && email.trim() !== '');
+  const canSendInvitations = chips.length > 0 && chips.every(email => validateEmail(email) && email.trim() !== '');
 
   return (
-    <div>
+    <div style={{ backgroundColor: "#FFFFFF", }}>
       <div style={{ width: "95%", margin: "auto", }}>
         <nav>
           <img src={Logo} style={{}} />
         </nav>
       </div>
       <div className='main_card'>
-        <div style={{ display: "flex", justifyContent: "center", flexDirection: "column", width: '90%', margin: "10px", }}>
+        <div style={{ display: "flex", justifyContent: "center", flexDirection: "column", width: '90%', marginTop: "10px", margin: "auto" }}>
           <h2 style={{ display: "flex", justifyContent: "center" }}> Send Meeting Invitations</h2>
-          <div style={{}}>
+          <div style={{ display: "flex", justifyContent: "center", width: "100%", height: "5px", backgroundColor: "#EDF2F6", borderRadius: "5px", margin: "auto" }}>
+          </div>
+          <div style={{ marginTop: "20px", width: "98.5%" }}>
             <div style={{ display: 'flex', flexDirection: 'column', }}>
               <label style={{ fontWeight: "700", fontSize: "15px" }}>Meeting Title</label>
               <input
@@ -130,73 +182,99 @@ const Invites = () => {
                 placeholder="Add Title"
                 value={meetingTitle}
                 onChange={e => setMeetingTitle(e.target.value)}
-                style={{ width: "40%", height: "30px", padding: "5px" }}
+                style={{ width: "100%", height: "40px", padding: "5px", backgroundColor: "#EDF2F6", border: " 1px solid #EDF2F6", paddingLeft: "10px", borderRadius: "5px" }}
               />
               <label style={{ fontWeight: "700", fontSize: "15px", marginTop: "10px" }}>Meeting Description</label>
               <textarea
                 placeholder="Add Description"
                 value={meetingDescription}
                 onChange={e => setMeetingDescription(e.target.value)}
-                style={{ width: "80%", height: "100px", padding: "5px",marginTop:"1.5%",fontFamily:"sans-serif" }}
+                style={{ width: "100%", height: "100px", padding: "5px", fontFamily: "sans-serif", padding: "5px", backgroundColor: "#EDF2F6", border: " 1px solid #EDF2F6", paddingLeft: "10px", paddingTop: "10px", borderRadius: "5px" }}
 
               />
             </div>
-            <div>
-              <h4 >Select Meeting Date</h4>
-              <DatePicker
-                selected={meetingDate}
-                onChange={date => setMeetingDate(date)}
-                dateFormat="yyyy-MM-dd"
-                className='custom-date-picker'
-                placeholderText='yyyy-mm-dd'
-
-              />
-              <h4 style={{ fontWeight: "600" }}>Select Meeting Time</h4>
-              <span style={{ fontWeight: "600", marginRight: "20px", fontSize: "18px" }}>From</span>
-              <TimePicker
-                onChange={time => setStartingTime(time)}
-                value={startingTime}
-                className="custom-time-picker"
-                style={{ marginLeft: "10%" }}
-              />
-              <span style={{ fontWeight: "600", marginRight: "20px", marginLeft: "80px", fontSize: "18px" }}>To</span>
-              <TimePicker
-                onChange={time => setEndingTime(time)}
-                value={endingTime}
-                className="custom-time-picker"
-              />
-            </div>
-            <div>
-              <span style={{ fontWeight: "600", }}>Write your Emails</span>
-            </div>
-            {emails.map((email, index) => (
-              <div key={index} style={{ display: "flex", marginTop: "20px" }}>
-                <input
-                  type="email"
-                  label="Write you Email"
-                  placeholder={`Email ${index + 1}`}
-                  value={email}
-                  onChange={e => handleEmailChange(index, e.target.value)}
-                  className={emailErrors[index] ? 'invalid' : ''}
-                  style={{ display: 'flex', width: "30%", height: '30px', marginTop: "auto",fontSize:"15px" }}
+            <div style={{ display: "flex", justifyContent: "space-between", width: "100.5%" }}>
+              <div styele={{ display: "flex", flexDirection: "column", width: "31%" }}>
+                <h5 >Select Meeting Date</h5>
+                <DatePicker
+                  selected={meetingDate}
+                  onChange={date => setMeetingDate(date)}
+                  dateFormat="yyyy-MM-dd"
+                  className='custom-date-picker'
+                  placeholderText='yyyy-mm-dd'
                 />
-                {emailErrors[index] && <p className="error" style={{ fontSize: '12px', color: 'red' }}>{emailErrors[index]}</p>}
-                {emails.length > 1 && (
-                  <button onClick={() => removeEmailField(index)} style={{ height: "35px",marginLeft:"15px",width:"3%",fontSize:"20px",backgroundColor:"white",border:"1px solid black",backgroundColor:"white", }}>-</button>
-                )}
               </div>
+              <div style={{ display: "flex", flexDirection: "column", width: "31%" }}>
+                <h5 style={{ fontWeight: "600" }}>Meeting Start Time</h5>
 
+                <TimePicker
+                  onChange={time => setStartingTime(time)}
+                  value={startingTime}
+                  className="custom-time-picker"
+                />
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", width: "31%" }}>
+                <h5 style={{ fontWeight: "600" }}>Meeting End Time</h5>
+                <TimePicker
+                  onChange={time => setEndingTime(time)}
+                  value={endingTime}
+                  className="custom-time-picker"
+                />
+              </div>
+            </div>
+            <div>
+              <span style={{ fontWeight: "600", }}>Invite via Emails</span>
+            </div>
+            <div style={{ marginTop: "2%", display: "flex", justifyContent: "space-between", width: "35.5%" }}>
+              <input
+                type="text"
+                placeholder="Write email here"
+                value={newEmail}
+                onChange={(e) => setNewEmail(e.target.value)}
+                onKeyPress={handleEmailChange}
+                style={{ height: "45px", width: "80%", fontSize: "15px", border: "none", backgroundColor: "#EDF2F6", paddingLeft: "5px" }}
+              />
+              <button style={{ height: "45px", backgroundColor: "#1967D3", fontSize: "30px", color: "#FFFFFF", border: "1px solid #FFFFFF", borderRadius: "6px", width: "50px" }} onClick={handleAddEmail}>+</button>
+
+            </div>
+            {errors && <p style={{ color: "red", fontSize: "15px" }}>{errors}</p>}
+            {chips.map((email, index) => (
+              <div key={index} className="email-chip" style={{ display: "flex", justifyContent: "space-between", width: "33%", marginTop: "3%" }}>
+                <span>{email}</span>
+                <span className="remove-chip" style={{ border: "1px solid grey", border: "none", fontSize: "20px", width: "60px", cursor: "pointer" }} onClick={() => removeChip(index)}>x</span>
+              </div>
             ))}
-            <button onClick={addEmailField} style={{ marginTop: '20px',marginBottom:"30px",height:"35px",width:"3%",backgroundColor:"white",border:"1px solid black" }}>+</button>
-            <button style={{marginLeft:"12.5%",height:"40px",backgroundColor:"white",width:"15%",}} onClick={sendInvitations} disabled={!canSendInvitations || invitationSent}>
-              {invitationSent ? 'Invitations Sent' : 'Send Invitations'}
-            </button>
             {invitationSent && (
-              <p style={{ fontSize: '14px', marginTop: '10px',border:"1px solid black",width:"35%",height:"35px",fontSize:"17px",padding:"20px" }}>
-                Room Link:
-                <a href={`http://localhost:3000/room/${roomId}`} target="_blank" rel="noopener noreferrer">{`http://localhost:3000/room/${roomId}`}</a>
-              </p>
+              <div>
+                <p style={{ fontSize: '14px', marginTop: '10px', borderRadius: "10px", color: "#1967D3", marginRight: "10px", border: "none", backgroundColor: "rgba(118, 1, 211, 0.04)", width: "26%", fontSize: "17px", padding: "20px" }}>
+                  <div style={{ width: "100%" }}>
+                    <span>Copy Link : </span>
+                    <br />
+                  </div>
+                  <div style={{ width: "100%", display: "flex", justifyContent: "flex-end" }}>
+                    <FontAwesomeIcon
+                      icon={faCopy}
+                      onClick={copyMeetingLink}
+                      style={{ cursor: 'pointer', color: "#1967D3" }}
+                    />
+                  </div>
+                  Room Link: {""}
+                  <a style={{ color: "#1967D3" }} href={`http://localhost:3000/room/${roomId}`} target="_blank" rel="noopener noreferrer">   {`http://localhost:3000/room/${roomId}`}</a>
+                </p>
+              </div>
             )}
+            <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "20px", width: "100%", marginBottom: "20px" }}>
+
+              <button
+                style={{ height: "45px", backgroundColor: "#1967D3", width: "20%", borderRadius: "5px", color: "white", border: "none" }}
+                onClick={sendInvitations}
+                disabled={!canSendInvitations}
+              >
+                {invitationSent ? 'Meeting Scheduled' : 'Schedule Meeting'}
+              </button>
+            </div>
+
+
           </div>
         </div>
       </div>
