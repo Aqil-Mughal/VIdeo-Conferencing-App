@@ -4,6 +4,9 @@ import RoomPage from "./Pages/Room";
 import Invites from "./Pages/Invite/Invites";
 import Signin from "./Pages/Signin/Signin";
 import TwilioRoom from "./Pages/Twilio";
+import Signup from "./Pages/Signup/Signup";
+import Signupcomfirmation from "./Pages/Signupconfirmation/Signupcomfirmation";
+import Newpasswordreset from "./Pages/Home/Newpasswordreset/Newpasswordreset";
 
 function App() {
   return (
@@ -13,6 +16,9 @@ function App() {
       <Route path="/room/:roomId" element={<RoomPage />} />
       <Route path='/signin' element={<Signin />} />
       <Route path='/twilio' element={<TwilioRoom />} />
+      <Route path='/sign-up' element={<Signup />} />
+      <Route path='/forgot-password' element={<Signupcomfirmation />} />
+      <Route path='/new-password-reset' element={<Newpasswordreset />} />
       </Routes>
       );
     }

@@ -207,7 +207,7 @@ const Homepage = () => {
                                 >
                                     Join Instant
                                 </button>
-                                
+                            
                                 <Modal
                                     open={open}
                                     onClose={handleClose}
